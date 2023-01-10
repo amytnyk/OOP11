@@ -11,14 +11,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MailSender {
-    private static final String GREETING_HTML = "<h1>Happy birthday!</h1>";
     private static final String SENDER_EMAIL = "oleksii.mytnyk@ucu.edu.ua";
     private static final String SENDER_NAME = "Oleksii Mytnyk";
 
-
-    public void sendMail(MailInfo info) throws MailjetSocketTimeoutException, MailjetException {
+    public static void sendMail(MailInfo info) throws MailjetSocketTimeoutException, MailjetException {
+        Mail email = info.generateEmail();
         MailjetClient client = new MailjetClient(
-                System.getenv(""), System.getenv(""), new ClientOptions("v3.1"));
+                System.getenv("API_KEY"), System.getenv("API_SECRET"), new ClientOptions("v3.1"));
         MailjetRequest request = new MailjetRequest(Emailv31.resource)
                 .property(Emailv31.MESSAGES, new JSONArray().put(new JSONObject()
                         .put(Emailv31.Message.FROM, new JSONObject()
@@ -27,8 +26,9 @@ public class MailSender {
                         .put(Emailv31.Message.TO, new JSONArray().put(new JSONObject()
                                 .put("Email", info.getClient().getEmail())
                                 .put("Name", info.getClient().getName())))
-                        .put(Emailv31.Message.SUBJECT, "Greetings from Alex.")
-                        .put(Emailv31.Message.HTMLPART, GREETING_HTML)
+                        .put(Emailv31.Message.SUBJECT, email.getSubject())
+                        .put(Emailv31.Message.HTMLPART, email.getHtml_part())
+                        .put(Emailv31.Message.TEXTPART, email.getText_part())
                         .put(Emailv31.Message.CUSTOMID, "AppGettingStartedTest")));
         MailjetResponse response = client.post(request);
         System.out.println(response.getStatus());

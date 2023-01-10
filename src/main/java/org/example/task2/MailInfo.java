@@ -10,4 +10,8 @@ import lombok.Setter;
 public class MailInfo {
     private MailCode mailCode;
     private Client client;
+
+    public Mail generateEmail() {
+        return mailCode.generateEmail(client);
+    }
 }

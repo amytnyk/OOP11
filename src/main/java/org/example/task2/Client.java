@@ -1,22 +1,19 @@
 package org.example.task2;
 
-import lombok.AllArgsConstructor;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.example.task1.Gender;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Client {
     @Generated
-    private final int id;
-    @Setter
+    private int id;
+    @Setter @NonNull
     private String name;
-    @Setter
+    @Setter @NonNull
     private int age;
-    @Setter
+    @Setter @NonNull
     private Gender sex;
-    @Setter
+    @Setter @NonNull
     private String email;
 }
